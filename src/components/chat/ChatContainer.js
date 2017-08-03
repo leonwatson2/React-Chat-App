@@ -109,7 +109,7 @@ const massChat = {
 		}],
 		name:"Community Chat",
 		users:["Michael Angelo"],
-		typingUsers:["Andrew Watkins"],
+		typingUsers:[],
 	}
 const randomChats = [
 	massChat,
