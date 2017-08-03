@@ -2,6 +2,7 @@
   "name": "react-chat-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://vlw0052.github.io/React-Chat-App/",
   "dependencies": {
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -10,11 +11,13 @@
     "socket.io": "^2.0.3"
   },
   "devDependencies": {
-    "react-scripts": "1.0.10"
+    "node-sass": "^4.5.3",
+    "react-scripts": "1.0.10",
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "styles": "sass --watch src/styles/index.scss:src/styles/index.css",
+    "build": "react-scripts build && mv build/ docs/",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
