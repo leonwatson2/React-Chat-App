@@ -37,9 +37,9 @@ export default class MessageInput extends Component {
 	*	Starts/Stops the interval for checking 
 	*/
 	sendTyping(){
-		const { sendTyping } = this.props
 		this.lastUpdateTime = Date.now()
 		if(!this.state.isTyping){
+			const { sendTyping } = this.props
 			this.setState({isTyping:true})
 			sendTyping(true)
 			this.startCheckingTyping()

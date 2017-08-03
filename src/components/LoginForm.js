@@ -12,7 +12,8 @@ export default class LoginForm extends Component {
 	    this.verify = this.verify.bind(this)
 	}
 
-	componentWillMount(){
+	componentDidMount(){
+		this.focus()
 	}
 
 	//uses the response from the server to verify user
@@ -48,6 +49,10 @@ export default class LoginForm extends Component {
 		return false
 	}
 
+	focus(){
+		this.textInput.focus()
+	}
+
 	render() {
 		const { nickname } = this.state 
 		return (
@@ -63,6 +68,7 @@ export default class LoginForm extends Component {
 			          </label>
 			          
 			          <input 
+			          		ref={(input)=>{ this.textInput = input }}
 			          		id="nickname" 
 			          		className="col s12" 
 			          		type="text"
