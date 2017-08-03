@@ -48,6 +48,9 @@ input, textarea{
 }
 
 .login-form{
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
 	input{
 		--height:20px;
 		// width:100%;
@@ -58,7 +61,7 @@ input, textarea{
 		line-height: var(--height);
 		font-size: var(--height);
 			border-bottom:solid 2px var(--received-message-color);
-		transition:all .5s ease-out;
+		transition:all .23s ease-in;
 		&:focus{
 			--height:50px;
 			border-bottom:solid 2px var(--primary-color-light);
