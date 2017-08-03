@@ -70,7 +70,6 @@ export default class MessageInput extends Component {
 
 	render() {
 		const { message } = this.state
-		const { sendTyping } = this.props
 		return (
 			<div className="message-input">
 					<form ref={(form)=>{this.form = form}} 
