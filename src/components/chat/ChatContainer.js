@@ -48,11 +48,12 @@ export default class ChatContainer extends Component {
 				if(isTyping && !chat.typingUsers.includes(user.name)) 
 					chat.typingUsers.push(user.name);
 				else if(!isTyping && chat.typingUsers.includes(user.name)){
-					chat.typingUsers.splice(chat.typingUsers.includes(user.name), 1);
+					chat.typingUsers.splice(chat.typingUsers.indexOf(user.name), 1);
 				}
 			}
 			return chat;
 		})
+
 		this.setState({ chats:newChats })
 	}
 
