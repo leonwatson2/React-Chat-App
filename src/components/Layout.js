@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LoginForm from './LoginForm'
 import ChatContainer from './chat/ChatContainer'
 
-var io = require('socket.io-client')
+// var io = require('socket.io-client')
 
 export default class Layout extends Component {
 	constructor(props) {

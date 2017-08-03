@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl'
 import PropTypes from 'prop-types'
 
 export default class LoginForm extends Component {
@@ -59,11 +58,7 @@ export default class LoginForm extends Component {
 			          		className="col s12" 
 			          		htmlFor="nickname">
 			          		<h1 style={{textAlign:"center"}}>
-			          			<FormattedMessage 
-				          			id="LoginForm__nickname"
-				          			description="Nickname the user will go by."
-				          			defaultMessage="Got a Nickname?"
-			          			/>
+			          			Got a nickname?
 			          		</h1>
 			          </label>
 			          
@@ -81,7 +76,7 @@ export default class LoginForm extends Component {
 	}
 	
 	randomPlaceholder(){
-		const randNames = ["VeryCleverNickNameThatsProbablyAlreadyTaken", "CrotchRocket69", "MadDog33", "L4ser9374", "UmmmMyName134", "YouDontNayOmi","SimpleName", "SexyCat99", "LightYear111"]
+		const randNames = ["VeryCleverNickNameThatsProbablyAlreadyTaken", "Rocket69", "MadDog33", "L4ser9374", "UmmmMyName134", "YouDontNayOmi","SimpleName", "SexyCat99", "LightYear111"]
 		return randNames[Math.floor(Math.random()*3000) % randNames.length]
 	}
 }
