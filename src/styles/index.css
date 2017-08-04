@@ -262,6 +262,13 @@ input, textarea {
   animation: .65s ease-out 0s show; }
   .message-container .time {
     order: 1; }
+  .message-container .data {
+    order: 2;
+    height: 100%;
+    margin-left: 25px; }
+  .message-container .name {
+    margin-top: 5px;
+    text-align: right; }
   .message-container .message {
     background: var(--received-message-bg-color);
     border-radius: 5px;
@@ -269,8 +276,6 @@ input, textarea {
     box-sizing: border-box;
     color: var(--received-message-color);
     height: 100%;
-    margin-left: 25px;
-    order: 2;
     padding: 10px 15px;
     position: relative; }
 @keyframes show {
@@ -298,11 +303,14 @@ input, textarea {
     .message-container.right .time {
       order: 2;
       margin-left: 25px; }
+    .message-container.right .data {
+      margin-left: 0;
+      order: 1; }
+    .message-container.right .name {
+      display: none; }
     .message-container.right .message {
       background: var(--sent-message-bg-color);
       color: var(--sent-message-color);
-      order: 1;
-      margin-left: 0;
       border-top-right-radius: 0;
       border-top-left-radius: 5px; }
     .message-container.right .message::before {
