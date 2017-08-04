@@ -6,7 +6,7 @@ import MdEject from 'react-icons/lib/md/eject'
 
 export default class SideBar extends Component {
 	render() {
-		const { chats, user, setActiveChat, logout } = this.props
+		const { chats, activeChat, user, setActiveChat, logout } = this.props
 		return (
 			<div id="side-bar">
 					<div className="heading">
@@ -20,7 +20,10 @@ export default class SideBar extends Component {
 						<input placeholder="Search" type="text"/>
 						<div className="plus"></div>
 					</div>
-					<div className="users">
+					<div 
+						className="users" 
+						ref='users' 
+						onClick={(e)=>{ (e.target === this.refs.user) && setActiveChat(null) }}>
 						
 						{
 						chats.map((chat)=>{
@@ -29,24 +32,19 @@ export default class SideBar extends Component {
 								const user = chat.users.find(({name})=>{
 									return name !== this.props.name
 								}) || { name:"Community" }
+								const classNames = (activeChat && activeChat.id === chat.id) ? 'active' : ''
 								return(
 								<div 
 									key={chat.id} 
-									className={`user ${!lastMessage.read && 'active'}`}
+									className={`user ${classNames}`}
 									onClick={ ()=>{ setActiveChat(chat) } }
 									>
 									<div className="user-photo">{user.name[0].toUpperCase()}</div>
 									<div className="user-info">
 										<div className="name">{user.name}</div>
-										<div className="last-message">{lastMessage.message}</div>
+										{lastMessage && <div className="last-message">{lastMessage.message}</div>}
 									</div>
-									{
-										lastMessage.read 
-											&& 
-										<div className="new-message"> 
-											<div className="indicator"></div>
-										</div>
-									}
+									
 								</div>
 							)
 							}
