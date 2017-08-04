@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
+import { User } from '../Classes'
 
 export default class LoginForm extends Component {
 	
@@ -35,7 +36,7 @@ export default class LoginForm extends Component {
 		event.preventDefault()
 		const { nickname } = this.state
 		if(this.isValidName(nickname)){
-			this.props.setUser({id:1, name:nickname})
+			this.props.setUser(new User({name:nickname}))
 		}else{
 			console.log("Not long enough name");
 		}
