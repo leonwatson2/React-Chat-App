@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 export default class MessageInput extends Component {
 	
 	constructor(props) {
@@ -25,12 +24,7 @@ export default class MessageInput extends Component {
 	*/
 	sendMessage(){
 
-		this.props.sendMessage({
-			id:Math.ceil(Math.random()*45321),
-			message:this.state.message,
-			read:true,
-			time:new Date(Date.now())
-		})
+		this.props.sendMessage(this.state.message)
 	}
 
 	componentWillUnmount() {
