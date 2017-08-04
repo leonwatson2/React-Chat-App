@@ -267,6 +267,7 @@ input, textarea {
     height: 100%;
     margin-left: 25px; }
   .message-container .name {
+    font-size: .65em;
     margin-top: 5px;
     text-align: right; }
   .message-container .message {
