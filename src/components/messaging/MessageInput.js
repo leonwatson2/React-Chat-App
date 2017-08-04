@@ -32,7 +32,12 @@ export default class MessageInput extends Component {
 			time:new Date(Date.now())
 		})
 	}
-	
+
+	componentWillUnmount() {
+		this.stopCheckingTyping();
+
+	}
+
 	/*
 	*	Starts/Stops the interval for checking 
 	*/
@@ -41,7 +46,7 @@ export default class MessageInput extends Component {
 		if(!this.state.isTyping){
 			const { sendTyping } = this.props
 			this.setState({isTyping:true})
-			sendTyping(true)
+			sendTyping(true);
 			this.startCheckingTyping()
 		}
 	}
@@ -53,9 +58,7 @@ export default class MessageInput extends Component {
 		this.typingInterval = setInterval(()=>{
 			
 				if((Date.now() - this.lastUpdateTime) > 300){
-					const { sendTyping } = this.props
 					this.setState({isTyping:false})
-					sendTyping(false)
 					this.stopCheckingTyping()
 				}
 			}, 300)
@@ -65,7 +68,10 @@ export default class MessageInput extends Component {
 	*	Stops the interval from checking if the user is typing
 	*/
 	stopCheckingTyping(){
-		clearInterval(this.typingInterval)
+		if(this.typingInterval){
+			clearInterval(this.typingInterval)
+			this.props.sendTyping(false)
+		}
 	}
 
 	render() {
