@@ -3,6 +3,12 @@ import PropTypes from 'prop-types'
 
 import ChatThread from './ChatThread'
 import SideBar from './SideBar'
+
+import { Chat, Message, User } from '../../Classes'
+import Messages from '../messaging/Messages'
+import MessageInput from '../messaging/MessageInput'
+import ChatHeading from './ChatHeading'
+
 export default class ChatContainer extends Component {
 	
 	constructor(props) {
@@ -22,13 +28,13 @@ export default class ChatContainer extends Component {
 	*	@param chatId {number}  The id of the chat to be added to.
 	*	@param message {string} The message to be added to the chat.
 	*/
-	sendMessage = (chatId, message)=>{
+	sendMessage(chatId, message){
 		var { chats } = this.state 
-		message.sender = this.props.user.name;
+		const sender = this.props.user.name;
 		
 		const newChats = chats.map((chat)=>{
 			if(chat.id === chatId)
-				chat.messages.push(message)				
+				chat.addMessage(new Message({ message, sender }))				
 			return chat;
 		})
 		this.setState({ chats:newChats })
@@ -39,16 +45,16 @@ export default class ChatContainer extends Component {
 	*	chatId {number} the id of the chat being typed in.
 	*	typing {boolean} If the user is typing still or not.
 	*/
-	sendTyping = (chatId, isTyping)=>{
+	sendTyping(chatId, isTyping){
 		var { chats } = this.state 
 		const { user } = this.props;
 		
 		const newChats = chats.map((chat)=>{
 			if(chat.id === chatId){
 				if(isTyping && !chat.typingUsers.includes(user.name)) 
-					chat.typingUsers.push(user.name);
+					chat.addTypingUser(user.name);
 				else if(!isTyping && chat.typingUsers.includes(user.name)){
-					chat.typingUsers.splice(chat.typingUsers.indexOf(user.name), 1);
+					chat.removeTypingUser(user.name);
 				}
 			}
 			return chat;
@@ -61,7 +67,7 @@ export default class ChatContainer extends Component {
 	*	Set the active the chat of the ChatRoom.
 	*	@param {Chat} The chat object to that is active.
 	*/
-	setActiveChat = (chat) => {
+	setActiveChat(chat){
 		this.setState({activeChat:chat})
 	}
 
@@ -74,44 +80,55 @@ export default class ChatContainer extends Component {
 					logout={logout}
 					chats={chats} 
 					user={user}
-					setActiveChat={this.setActiveChat}/>				
+					activeChat={activeChat}
+					setActiveChat={ (chat)=> this.setActiveChat(chat) }/>				
 				<ChatThread 
 					chat={activeChat} 
-					user={user}
-					sendMessage={(message)=>{ this.sendMessage(activeChat.id, message) }}
-					sendTyping={(isTyping)=>{ this.sendTyping(activeChat.id, isTyping) }}/>
+					user={user}>
+					{
+						activeChat !== null ? (
+							<div className="chat-room">
+								<ChatHeading 
+									name={activeChat.name} 
+									online={true} />
+
+								<Messages 
+									messages={activeChat.messages} 
+									user={user} 
+									typingUsers={activeChat.typingUsers}/>
+								
+								<MessageInput 
+									sendMessage={
+										(message)=>{ 
+											this.sendMessage(activeChat.id, message) 
+										}
+									} 
+									sendTyping={
+										(isTyping)=>{ 
+											this.sendTyping(activeChat.id, isTyping) 
+										}
+									}
+									/>
+							</div>
+							)
+						: 
+							<div className="chat-room choose">
+								<h3>Choose a chat</h3>
+							</div>
+					}
+				</ChatThread>
 			</div>
 		);
 	}
 }
-const massChat = {
-		id:0,
-		messages:[{
-			id:1,
-			message:"Hey Michael",
-			sender:"Bessie McCoy",
-			time:new Date("April 7, 1993 14:30"),
-			read:true
+const fakeMessages = [
+		new Message({ message:"Hey Michael", sender:"Bessie McCoy"}),
+		new Message({ message:"Hey Amy", sender:"Michael Angelo"}),
+		new Message({ message:"Last Message", sender:"Bessie McCoy"})
+	]
 
-		},{
-			id:1342,
-			message:"Hey Amy",
-			sender:"Michael Angelo",
-			time:new Date("April 7, 1993 14:45"),
-			read:false
-		},
-		{
-			id:132,
-			message:"Last Message",
-			sender:"Bessie McCoy",
-			time:new Date("April 7, 1993 14:50"),
-			read:false
+const massChat = new Chat({name:"Community Chat", messages:fakeMessages})
 
-		}],
-		name:"Community Chat",
-		users:["Michael Angelo"],
-		typingUsers:[],
-	}
 const randomChats = [
 	massChat,
 	{
@@ -394,11 +411,6 @@ const randomChats = [
 ]
 
 
-
-const User = {
-	id:PropTypes.number,
-	username:PropTypes.string
-} 
 ChatContainer.propTypes = {
 	socket:PropTypes.object,
 	user:PropTypes.shape(User).isRequired
