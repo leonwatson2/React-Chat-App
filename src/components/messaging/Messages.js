@@ -7,9 +7,7 @@ export default class Messages extends Component {
 	  this.scrollDown = this.scrollDown.bind(this)
 	}
 	
-	getTime(date){
-		return `${date.getHours()}:${("0"+date.getMinutes()).slice(-2)}`
-	}
+	
 
 	scrollDown(){
 		var { container } = this.refs
@@ -36,7 +34,7 @@ export default class Messages extends Component {
 						messages.map((mes, i)=>{
 							return( 
 							<div key={mes.id} className={`message-container ${mes.sender === user.name && 'right'}`}>
-								<div className="time">{mes.time ? this.getTime(mes.time) : null}</div>
+								<div className="time">{mes.getTime()}</div>
 								<div className="data">
 									<div className="message">{mes.message}</div>
 									<div className="name">{mes.sender}</div>
