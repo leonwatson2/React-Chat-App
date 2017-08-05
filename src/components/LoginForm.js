@@ -1,31 +1,45 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { User } from '../Classes'
+import { VERIFY_USER } from '../Constants'
 
 export default class LoginForm extends Component {
 	
 	constructor(props) {
 	    super(props);
-	    this.state = { nickname: '', socket: props.socket };
+	    this.state = { nickname: '' };
 
 	    this.handleChange = this.handleChange.bind(this);
 	    this.handleSubmit = this.handleSubmit.bind(this);
-	    this.verify = this.verify.bind(this)
+	    this.setUser = this.setUser.bind(this);
 	}
 
 	componentDidMount(){
 		this.focus()
+		this.initSocket()
 	}
 
-	//uses the response from the server to verify user
-	verify(user){
-		if(!user.error){	
-			this.props.verified(user)
-		}else{
-			console.log(user.error.message);
+	initSocket(){
+		const { socket } = this.props
+
+		socket.on(VERIFY_USER, this.setUser)
+
+	}
+
+	setUser(response){
+		const { nickname } = this.state
+		if(!response.isUser) 
+			this.props.setUser(new User({name:nickname}))
+		else{
+			this.setError("User name taken.")
 		}
+		this.props.socket.off(VERIFY_USER, this.setUser)
+
 	}
 
+	setError(error){
+		console.error(error);
+	}
 	//updates form inputs
 	handleChange(event){
 		this.setState({ nickname:event.target.value })
@@ -34,12 +48,11 @@ export default class LoginForm extends Component {
 	//Sends emit to socket for verification 
 	handleSubmit(event){
 		event.preventDefault()
+		const { socket } = this.props
 		const { nickname } = this.state
-		if(this.isValidName(nickname)){
-			this.props.setUser(new User({name:nickname}))
-		}else{
-			console.log("Not long enough name");
-		}
+		
+		socket.emit(VERIFY_USER, nickname)
+		
 	}
 	
 	//check if the username is valid
