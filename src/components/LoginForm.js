@@ -28,8 +28,9 @@ export default class LoginForm extends Component {
 
 	setUser(response){
 		const { nickname } = this.state
-		if(!response.isUser) 
-			this.props.setUser(new User({name:nickname}))
+		if(!response.isUser){
+			this.props.setUser(response.user)
+		}
 		else{
 			this.setError("User name taken.")
 		}
@@ -40,6 +41,7 @@ export default class LoginForm extends Component {
 	setError(error){
 		console.error(error);
 	}
+
 	//updates form inputs
 	handleChange(event){
 		this.setState({ nickname:event.target.value })
@@ -50,7 +52,6 @@ export default class LoginForm extends Component {
 		event.preventDefault()
 		const { socket } = this.props
 		const { nickname } = this.state
-		
 		socket.emit(VERIFY_USER, nickname)
 		
 	}
