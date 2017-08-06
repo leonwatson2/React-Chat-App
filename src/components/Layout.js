@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LoginForm from './LoginForm'
 import ChatContainer from './chat/ChatContainer'
-import { USER_CONNECTED } from '../Constants'
+import { USER_CONNECTED, LOGOUT } from '../Constants'
 
 var io = require('socket.io-client')
 
@@ -57,6 +57,8 @@ export default class Layout extends Component {
 	*	Sets the user to null.
 	*/
 	logout(){
+		const { socket } = this.state
+		socket.emit(LOGOUT)
 		this.setState({user:null})
 	}
 	render() {
