@@ -10,7 +10,7 @@ export default class Messages extends Component {
 	
 
 	scrollDown(){
-		var { container } = this.refs
+		const { container } = this.refs
 		container.scrollTop = container.scrollHeight
 	}
 	

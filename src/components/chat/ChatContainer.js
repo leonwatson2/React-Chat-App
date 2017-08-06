@@ -16,9 +16,11 @@ export default class ChatContainer extends Component {
 	
 	  this.state = {
 	  	activeChat:null,
-	  	chats:[massChat],
+	  	communityChat:null,
+	  	chats:[],
 	  };
 	}
+
 	componentDidMount() {
 		this.setState({activeChat:randomChats[0]})
 	}
@@ -29,7 +31,7 @@ export default class ChatContainer extends Component {
 	*	@param message {string} The message to be added to the chat.
 	*/
 	sendMessage(chatId, message){
-		var { chats } = this.state 
+		const { chats } = this.state 
 		const sender = this.props.user.name;
 		
 		const newChats = chats.map((chat)=>{
@@ -46,7 +48,7 @@ export default class ChatContainer extends Component {
 	*	typing {boolean} If the user is typing still or not.
 	*/
 	sendTyping(chatId, isTyping){
-		var { chats } = this.state 
+		const { chats } = this.state 
 		const { user } = this.props;
 		
 		const newChats = chats.map((chat)=>{
