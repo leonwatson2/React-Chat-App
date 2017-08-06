@@ -15,6 +15,7 @@ export default class Layout extends Component {
 		};
 	  this.setUser = this.setUser.bind(this)
 	  this.logout = this.logout.bind(this)
+	  this.reconnectUserInfo = this.reconnectUserInfo.bind(this)
 	}
 
 	componentWillMount() {
@@ -27,9 +28,19 @@ export default class Layout extends Component {
 		socket.on('connect', (value)=>{
 			console.log("Connected");
 		})
-		socket.on('disconnect', (value)=>{
-			console.log("Disconnected");
-		})
+		socket.on('disconnect', this.reconnectUserInfo)
+	}
+
+	/*
+	*	Connectes user info back to the server.
+	*	If the user name is already logged in.
+	*/
+	reconnectUserInfo(){
+		const { socket, user } = this.state
+		if(this.state.user != null){
+			socket.emit(USER_CONNECTED, user)
+		}
+
 	}
 
 	/*
@@ -58,7 +69,7 @@ export default class Layout extends Component {
 					!user ? 
 					<LoginForm socket={socket} setUser={this.setUser} verified={ this.setUser }/>
 					: 
-					<ChatContainer logout={this.logout} user={user}/>
+					<ChatContainer socket={socket} logout={this.logout} user={user}/>
 				}
 				
 			</div>
