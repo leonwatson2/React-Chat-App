@@ -53,17 +53,17 @@ input, textarea{
 	flex-direction: column;
 	input{
 		--height:20px;
-		// width:100%;
+		max-width:100%;
 		border-top:none;
 		border-left:none;
 		border-right: none;
 		height:var(--height);
 		line-height: var(--height);
 		font-size: var(--height);
-			border-bottom:solid 2px var(--received-message-color);
+		border-bottom:solid 2px var(--received-message-color);
 		transition:all .23s ease-in;
 		&:focus{
-			--height:50px;
+			--height:30px;
 			border-bottom:solid 2px var(--primary-color-light);
 			outline: none;
 		}

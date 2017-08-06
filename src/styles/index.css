@@ -34,6 +34,7 @@ input, textarea {
   flex-direction: column; }
   .login-form input {
     --height: 20px;
+    max-width: 100%;
     border-top: none;
     border-left: none;
     border-right: none;
@@ -43,7 +44,7 @@ input, textarea {
     border-bottom: solid 2px var(--received-message-color);
     transition: all .23s ease-in; }
     .login-form input:focus {
-      --height: 50px;
+      --height: 30px;
       border-bottom: solid 2px var(--primary-color-light);
       outline: none; }
 
