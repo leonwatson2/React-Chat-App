@@ -32,6 +32,7 @@ export default class Messages extends Component {
 					<div className="thread">
 					{
 						messages.map((mes, i)=>{
+							console.log(mes, user.name);
 							return( 
 							<div key={mes.id} className={`message-container ${mes.sender === user.name && 'right'}`}>
 								<div className="time">{mes.time}</div>

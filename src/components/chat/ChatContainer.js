@@ -8,7 +8,7 @@ import { Chat, Message, User } from '../../Classes'
 import Messages from '../messaging/Messages'
 import MessageInput from '../messaging/MessageInput'
 import ChatHeading from './ChatHeading'
-import { COMMUNITY_CHAT, MESSAGE_RECIEVED } from '../../Constants'
+import { COMMUNITY_CHAT, MESSAGE_RECIEVED, MESSAGE_SENT } from '../../Constants'
 
 export default class ChatContainer extends Component {
 	
@@ -53,8 +53,13 @@ export default class ChatContainer extends Component {
 	addMessageToChat(chatId){
 		return message =>{
 			const { chats } = this.state
-			let chat = chats.find((e)=>e.id === chatId)
-			chat.messages.push(message)
+			chats.map((chat) => {
+				if(chat.id === chatId)
+					chat.messages.push(message)
+					
+			})
+			console.log(chats);
+			this.setState({chats})
 		}
 	}
 	/*
@@ -64,14 +69,12 @@ export default class ChatContainer extends Component {
 	*/
 	sendMessage(chatId, message){
 		const { chats } = this.state 
+		const { socket } = this.props
+
 		const sender = this.props.user.name;
 		
-		const newChats = chats.map((chat)=>{
-			if(chat.id === chatId)
-				chat.addMessage(new Message({ message, sender }))				
-			return chat;
-		})
-		this.setState({ chats:newChats })
+		socket.emit(MESSAGE_SENT, {chatId, message})
+		
 	}
 
 	/*
@@ -83,18 +86,18 @@ export default class ChatContainer extends Component {
 		const { chats } = this.state 
 		const { user } = this.props;
 		
-		const newChats = chats.map((chat)=>{
-			if(chat.id === chatId){
-				if(isTyping && !chat.typingUsers.includes(user.name)) 
-					chat.addTypingUser(user.name);
-				else if(!isTyping && chat.typingUsers.includes(user.name)){
-					chat.removeTypingUser(user.name);
-				}
-			}
-			return chat;
-		})
+		// const newChats = chats.map((chat)=>{
+		// 	if(chat.id === chatId){
+		// 		if(isTyping && !chat.typingUsers.includes(user.name)) 
+		// 			chat.addTypingUser(user.name);
+		// 		else if(!isTyping && chat.typingUsers.includes(user.name)){
+		// 			chat.removeTypingUser(user.name);
+		// 		}
+		// 	}
+		// 	return chat;
+		// })
 
-		this.setState({ chats:newChats })
+		// this.setState({ chats:newChats })
 	}
 
 	/*
