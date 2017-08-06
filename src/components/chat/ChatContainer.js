@@ -8,6 +8,7 @@ import { Chat, Message, User } from '../../Classes'
 import Messages from '../messaging/Messages'
 import MessageInput from '../messaging/MessageInput'
 import ChatHeading from './ChatHeading'
+import { COMMUNITY_CHAT, MESSAGE_RECIEVED } from '../../Constants'
 
 export default class ChatContainer extends Component {
 	
@@ -19,12 +20,43 @@ export default class ChatContainer extends Component {
 	  	communityChat:null,
 	  	chats:[],
 	  };
+	  this.setCommunityChat = this.setCommunityChat.bind(this)
 	}
 
 	componentDidMount() {
-		this.setState({activeChat:randomChats[0]})
+		const { socket } = this.props
+		socket.emit(COMMUNITY_CHAT)
+		this.initSocket()
 	}
-	
+		
+	initSocket(){
+		const { socket } = this.props
+		socket.on(COMMUNITY_CHAT, this.setCommunityChat)
+	}
+
+	/*
+	*	Gets the community chat and sets 
+	*	message recieve event for
+	* 	@param chat {Chat}
+	*/
+	setCommunityChat(chat){
+		const { socket } = this.props
+		const { chats } = this.state
+		this.setState({chats:[...chats, chat], activeChat:chat})
+		socket.on(`${MESSAGE_RECIEVED}-${chat.id}`, this.addMessageToChat(chat.id))
+
+	}
+
+	/*
+	* Adds message to chat 
+	*/
+	addMessageToChat(chatId){
+		return message =>{
+			const { chats } = this.state
+			let chat = chats.find((e)=>e.id === chatId)
+			chat.messages.push(message)
+		}
+	}
 	/*
 	*	Adds a message to the specified chat
 	*	@param chatId {number}  The id of the chat to be added to.
@@ -83,7 +115,8 @@ export default class ChatContainer extends Component {
 					chats={chats} 
 					user={user}
 					activeChat={activeChat}
-					setActiveChat={ (chat)=> this.setActiveChat(chat) }/>				
+					setActiveChat={ (chat)=> this.setActiveChat(chat) }/>		
+
 				<ChatThread 
 					chat={activeChat} 
 					user={user}>
@@ -93,7 +126,6 @@ export default class ChatContainer extends Component {
 								<ChatHeading 
 									name={activeChat.name} 
 									online={true} />
-
 								<Messages 
 									messages={activeChat.messages} 
 									user={user} 
