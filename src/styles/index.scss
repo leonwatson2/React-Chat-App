@@ -133,6 +133,7 @@ input, textarea{
 		}
 
 		input{
+			width: 100%;
 			background:var(--primary-color);
 			flex-grow: 1;
 			box-sizing:border-box;

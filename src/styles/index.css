@@ -102,6 +102,7 @@ input, textarea {
       margin-right: 15px;
       cursor: pointer; }
     #side-bar .search input {
+      width: 100%;
       background: var(--primary-color);
       flex-grow: 1;
       box-sizing: border-box;
