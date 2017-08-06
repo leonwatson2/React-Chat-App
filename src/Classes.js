@@ -1,4 +1,4 @@
-import uuidv4 from 'uuid/v4';
+const uuidv4 = require('uuid/v4');
 
 /*
 *	@constructor User
@@ -10,7 +10,6 @@ import uuidv4 from 'uuid/v4';
 function User({name}){
 	this.id = uuidv4()
 	this.name = name
-	console.log(typeof this.id);
 }
 
 /*
@@ -70,7 +69,7 @@ function Chat({messages = [], name="", users=[]}){
 	}
 }
 
-export {
+module.exports = {
 	Chat,
 	Message,
 	User
