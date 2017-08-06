@@ -25,13 +25,11 @@ function User({name}){
 */
 function Message({message, sender}){
 	this.id = uuidv4()
-	this.time = new Date(Date.now())
+	this.time = getTime(new Date(Date.now()))
 	this.message = message
 	this.sender = sender
 
-	this.getTime = ()=>{
-		return `${this.time.getHours()}:${("0"+this.time.getMinutes()).slice(-2)}`
-	}
+	
 } 
 
 /*
@@ -68,6 +66,10 @@ function Chat({messages = [], name="", users=[]}){
 
 	}
 }
+
+const getTime = (date)=>{
+		return `${date.getHours()}:${("0"+date.getMinutes()).slice(-2)}`
+	}
 
 module.exports = {
 	Chat,
