@@ -8,7 +8,7 @@ import { User } from '../../Classes'
 import Messages from '../messaging/Messages'
 import MessageInput from '../messaging/MessageInput'
 import ChatHeading from './ChatHeading'
-import { COMMUNITY_CHAT, MESSAGE_RECIEVED, MESSAGE_SENT } from '../../Constants'
+import { COMMUNITY_CHAT, MESSAGE_RECIEVED, MESSAGE_SENT, TYPING } from '../../Constants'
 
 export default class ChatContainer extends Component {
 	
@@ -20,7 +20,9 @@ export default class ChatContainer extends Component {
 	  	communityChat:null,
 	  	chats:[],
 	  };
-	  this.setCommunityChat = this.setCommunityChat.bind(this)
+	  this.resetChat = this.resetChat.bind(this)
+	  this.removeSocketEvents = this.removeSocketEvents.bind(this)
+	  this.socketEvents = [] //used to deinitialize socket events later
 	}
 
 	componentDidMount() {
@@ -28,23 +30,56 @@ export default class ChatContainer extends Component {
 		socket.emit(COMMUNITY_CHAT)
 		this.initSocket()
 	}
+
+	componentWillUnmount() {
+		this.deinitialize()
+	}
 		
 	initSocket(){
 		const { socket } = this.props
-		socket.on(COMMUNITY_CHAT, this.setCommunityChat)
+		socket.on(COMMUNITY_CHAT, this.resetChat)
 	}
 
+	deinitialize(){
+		const { socket } = this.props
+
+		socket.off(COMMUNITY_CHAT)
+		this.removeSocketEvents(socket, this.socketEvents)
+	}
+
+	removeSocketEvents(socket, events){
+
+		if(events.length > 0){
+			socket.off(events[0])
+			this.removeSocketEvents(socket, events.slice(1))
+		}
+	}
 	/*
 	*	Gets the community chat and sets 
 	*	message recieve event for
 	* 	@param chat {Chat}
 	*/
-	setCommunityChat(chat){
+	resetChat(chat){
+		
+		const { socket } = this.props
+		const { chats } = this.state
+		const messageEvent = `${MESSAGE_RECIEVED}-${chat.id}`
+		const typingEvent = `${TYPING}-${chat.id}`
+
+		this.setState({chats:[chat], activeChat:chat})
+		
+		socket.on(messageEvent, this.addMessageToChat(chat.id))
+		socket.on(typingEvent, this.updateTypingInChat(chat.id))
+		
+		this.socketEvents.push(messageEvent, typingEvent)
+
+	}
+
+	addChat(chat){
 		const { socket } = this.props
 		const { chats } = this.state
 		this.setState({chats:[...chats, chat], activeChat:chat})
 		socket.on(`${MESSAGE_RECIEVED}-${chat.id}`, this.addMessageToChat(chat.id))
-
 	}
 
 	/*
@@ -60,6 +95,26 @@ export default class ChatContainer extends Component {
 			})
 			this.setState({chats:newChats})
 		}
+	}
+
+	/*
+	*	Updates the typing of chat with id passed in.
+	*/
+	updateTypingInChat(chatId){
+		return ({isTyping, user}) =>{
+					console.log(user, isTyping);
+					const { chats } = this.state
+					let newChats = chats.map((chat) => {
+						if(chat.id === chatId){
+							if(isTyping && !chat.typingUsers.includes(user))
+								chat.typingUsers.push(user)
+							else if(!isTyping && chat.typingUsers.includes(user))
+								chat.typingUsers = chat.typingUsers.filter(u => u !== user)
+						}
+						return chat;
+					})
+					this.setState({chats:newChats})
+				}
 	}
 	/*
 	*	Adds a message to the specified chat
@@ -80,21 +135,10 @@ export default class ChatContainer extends Component {
 	*	typing {boolean} If the user is typing still or not.
 	*/
 	sendTyping(chatId, isTyping){
-		// const { chats } = this.state 
-		// const { user } = this.props;
-		
-		// const newChats = chats.map((chat)=>{
-		// 	if(chat.id === chatId){
-		// 		if(isTyping && !chat.typingUsers.includes(user.name)) 
-		// 			chat.addTypingUser(user.name);
-		// 		else if(!isTyping && chat.typingUsers.includes(user.name)){
-		// 			chat.removeTypingUser(user.name);
-		// 		}
-		// 	}
-		// 	return chat;
-		// })
 
-		// this.setState({ chats:newChats })
+		const { socket } = this.props
+		socket.emit(TYPING, {chatId, isTyping})
+		
 	}
 
 	/*
