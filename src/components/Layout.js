@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import LoginForm from './LoginForm'
 import ChatContainer from './chat/ChatContainer'
-import { USER_CONNECTED, LOGOUT } from '../Constants'
+import { USER_CONNECTED, LOGOUT, COMMUNITY_CHAT } from '../Constants'
 
+var serverURI = process.env.REACT_APP_SERVER 
 var io = require('socket.io-client')
 
 export default class Layout extends Component {
@@ -19,7 +20,8 @@ export default class Layout extends Component {
 	}
 
 	componentWillMount() {
-		var socket = io('http://68.191.211.185:3231')
+		
+		var socket = io(serverURI)
 		this.setState({ socket })
 		this.initSocket(socket)
 	}
@@ -37,7 +39,9 @@ export default class Layout extends Component {
 	*/
 	reconnectUserInfo(){
 		const { socket, user } = this.state
+
 		if(this.state.user != null){
+			socket.emit(COMMUNITY_CHAT)
 			socket.emit(USER_CONNECTED, user)
 		}
 
@@ -78,3 +82,4 @@ export default class Layout extends Component {
 		);
 	}
 }
+
