@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { User } from '../Classes'
 import { VERIFY_USER } from '../Constants'
 
 export default class LoginForm extends Component {
 	
 	constructor(props) {
 	    super(props);
-	    this.state = { nickname: '' };
+	    this.state = { nickname: "Love" };
 
 	    this.handleChange = this.handleChange.bind(this);
 	    this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,14 +26,13 @@ export default class LoginForm extends Component {
 	}
 
 	setUser(response){
-		const { nickname } = this.state
 		if(!response.isUser){
 			this.props.setUser(response.user)
+			this.props.socket.off(VERIFY_USER, this.setUser)
 		}
 		else{
 			this.setError("User name taken.")
 		}
-		this.props.socket.off(VERIFY_USER, this.setUser)
 
 	}
 
@@ -56,13 +54,6 @@ export default class LoginForm extends Component {
 		
 	}
 	
-	//check if the username is valid
-	isValidName(name){
-		if(name.length > 0){
-			return true
-		}
-		return false
-	}
 
 	focus(){
 		this.textInput.focus()
