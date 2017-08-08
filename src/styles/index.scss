@@ -1,30 +1,37 @@
-:root{
-	--primary-color:#3e3e5e;
-	--primary-color-dark:#2e2e4f;
-	--primary-color-light:#5d5d8a;
-	--primary-color-active:#363656;
-	--sent-message-bg-color:#89a1fc;
-	--secondary-color:#484d79;
-	--main-text-color:#cac8ee;
-	--messages-bg:#dcddf5;
-	--received-message-bg-color:#fff;
-	--sent-message-color:#fff;
-	--received-message-color:#b3b2ca;
-	--success-color:#60d66a;
 
-}
+	$primary-color:#3e3e5e;
+	$primary-color-dark:#2e2e4f;
+	$primary-color-light:#5d5d8a;
+	$primary-color-active:#363656;
+	$sent-message-bg-color:#89a1fc;
+	$secondary-color:#484d79;
+	$main-text-color:#cac8ee;
+	$messages-bg:#dcddf5;
+	$received-message-bg-color:#fff;
+	$sent-message-color:#fff;
+	$received-message-color:#b3b2ca;
+	$success-color:#60d66a;
+	$main-padding-vertical:18px;
+	$main-padding-horizontal:16px;
+	$main-padding: $main-padding-vertical $main-padding-horizontal;
+
+	$head-height:12vh;
+	$head-max-height:65px;
+	$footer-max-height:65px;
+	$footer-height:10vh;
+
 
 @mixin customscrollbar(){
 	&::-webkit-scrollbar-track{
 			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-			background-color: var(--main-text-color);
+			background-color:  $main-text-color;
 		}
 		&::-webkit-scrollbar{
 			width: 5px;
 			background-color: green;
 		}
 		&::-webkit-scrollbar-thumb{
-			background-color: var(--secondary-color);
+			background-color:  $secondary-color;
 		}
 }
 
@@ -52,41 +59,38 @@ input, textarea{
 	justify-content: center;
 	flex-direction: column;
 	input{
-		--height:20px;
+		$height:20px;
 		max-width:100%;
 		border-top:none;
 		border-left:none;
 		border-right: none;
-		height:var(--height);
-		line-height: var(--height);
-		font-size: var(--height);
-		border-bottom:solid 2px var(--received-message-color);
+		height: $height;
+		line-height:  $height;
+		font-size:  $height;
+		border-bottom:solid 2px  $received-message-color;
 		transition:all .23s ease-in;
 		&:focus{
-			--height:30px;
-			border-bottom:solid 2px var(--primary-color-light);
+			$height:30px;
+			border-bottom:solid 2px  $primary-color-light;
 			outline: none;
 		}
 	}
 }
+@mixin dot-indicator($size, $color){
 
-.indicator{
-	width: var(--indicator-size);
-	height: var(--indicator-size);
-	border-radius: var(--indicator-size);
-	background:var(--indicator-color);
-	display: inline-block;
-	margin-right: 8px;
+	.indicator{
+		width: $size;
+		height: $size;
+		border-radius: $size;
+		background: $color;
+		display: inline-block;
+		margin-right: 8px;
+	}
+
 }
-
 .container{
-	--main-padding-vertical:18px;
-	--main-padding-horizontal:16px;
-	--main-padding:var(--main-padding-vertical) var(--main-padding-horizontal);
 
-	--head-size:65px;
-	--footer-height:65px;
-	color:var(--main-text-color);
+	color: $main-text-color;
 	display:flex;
 	flex-direction: row;
 	align-items: flex-start;
@@ -104,17 +108,18 @@ input, textarea{
 	
 	.heading{
 		box-sizing: border-box;
-		min-height: var(--head-size);
-		padding:var(--main-padding);
+		height:$head-height;
+		max-height:$head-max-height;
+		padding: $main-padding;
 		display:flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content:space-between;
-		background:var(--primary-color-dark);
+		background: $primary-color-dark;
 	}
 	
 	.search{
-		background:var(--primary-color);
+		background: $primary-color;
 	    box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
@@ -125,7 +130,8 @@ input, textarea{
 		border-color: black;
 		padding-left: 15px;
 		padding-right: 20px;
-		min-height:var(--head-size);
+		height:10vh;
+		max-height: $head-max-height;
 		
 		.search-icon{
 			margin-right: 15px;
@@ -134,23 +140,23 @@ input, textarea{
 
 		input{
 			width: 100%;
-			background:var(--primary-color);
+			background: $primary-color;
 			flex-grow: 1;
 			box-sizing:border-box;
 			border:none;
-			color:var(--main-text-color);					
+			color: $main-text-color;				
 			&:focus{
 				outline:none;		
 			}
 			&::placeholder{
-				color:var(--main-text-color);
+				color: $main-text-color;
 				opacity: .6;
 			}											
 		}
 		
 		.plus{
-			--plus-width:2px;
-			--plus-length:16px;
+			$plus-width:2px;
+			$plus-length:16px;
 			display: inline-block;
 			position: relative;
 			cursor:pointer;
@@ -160,17 +166,17 @@ input, textarea{
 			&::after, &::before{
 				content:'';
 				position: absolute;
-				background: var(--received-message-color);
+				background:  $received-message-color;
 
 			}
 			&::after{
-				width:var(--plus-length);
-				height:var(--plus-width);
+				width: $plus-length;
+				height: $plus-width;
 				top:5px;
 			}
 			&::before{
-				width:var(--plus-width);
-				height:var(--plus-length);
+				width: $plus-width;
+				height: $plus-length;
 				top:-2px;
 				left:7px;
 			}
@@ -181,21 +187,21 @@ input, textarea{
 		@include customscrollbar();
 		
 		overflow-y: scroll;
-		background: var(--primary-color);
+		background:  $primary-color;
 		flex-grow:1;
 		
 		.user{
-			--indicator-size:16px;
-			--indicator-color:var(--success-color );
+			$indicator-size:16px;
+			$indicator-color: $success-color ;
 	
 			align-items: center;
 			display: flex;
 			height:66px;
 			justify-content: flex-start;
-			padding: var(--main-padding);
+			padding:  $main-padding;
 			
 			&.active, &:hover{
-				background:var(--primary-color-dark);
+				background: $primary-color-dark;
 			}
 			
 			&:hover:not(.active){
@@ -229,14 +235,15 @@ input, textarea{
 	
 	.current-user{
 		align-items: center;
-		background:var(--secondary-color);
+		background: $secondary-color;
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: row;
-		min-height: var(--footer-height);
+		height: $footer-height;
+		max-height:  $footer-max-height;
 		justify-content: space-between;
-		padding-left: var(--main-padding-horizontal);
-		padding-right: var(--main-padding-horizontal);
+		padding-left:  $main-padding-horizontal;
+		padding-right:  $main-padding-horizontal;
 		
 		.logout{
 			align-items: center;
@@ -250,7 +257,7 @@ input, textarea{
 }
 
 .chat-header{
-	background:var(--primary-color-light);
+	background: $primary-color-light;
 	
 	box-shadow: 0px 6px 5px -2px rgba(225,225,225, .7);
 	box-sizing: border-box;
@@ -258,8 +265,10 @@ input, textarea{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	
+	height:$head-height;
 
-	min-height: var(--head-size);
+	max-height:$head-max-height;
 	
 	padding: 18px 16px;
 	
@@ -272,14 +281,14 @@ input, textarea{
 		}
 		
 		.status{
-			--indicator-size:8px;
+			$indicator-size:8px;
 			align-items:center;
 			display: flex;
 			.online{
-				--indicator-color:#32b0bb;
+				$indicator-color:#32b0bb;
 			}
 			.offline{
-				--indicator-color:#C63D2C
+				$indicator-color:#C63D2C
 			}
 			
 		}
@@ -303,7 +312,15 @@ input, textarea{
 	height: 100%;
 	width: 76.25%;
 }
-
+@media screen and (max-width: 510px){
+	#side-bar{
+		position:absolute;
+		left:-100%;
+	}
+	.chat-room-container{
+		width: 100%;
+	}
+}
 .chat-room{
 	display: flex;
 	flex-direction: column;
@@ -332,8 +349,8 @@ input, textarea{
 		display:flex;
 		flex-direction: column;
 		justify-content: flex-end;
-		color:var(--received-message-color);
-		background:var(--messages-bg);
+		color: $received-message-color;
+		background: $messages-bg;
 
 		
 	}
@@ -344,7 +361,7 @@ input, textarea{
 	justify-content: flex-start;
 	min-height: 50px;
 	margin:10px 15px;
-	--message-triangle-offset:-7px;
+	$message-triangle-offset:-7px;
 	
 	animation: .65s ease-out 0s show;
 	
@@ -364,11 +381,11 @@ input, textarea{
 		text-align: right;
 	}
 	.message{
-		background:var(--received-message-bg-color);
+		background: $received-message-bg-color;
 		border-radius: 5px;
 		border-top-left-radius: 0;
 		box-sizing: border-box;
-		color:var(--received-message-color);				
+		color: $received-message-color;			
 		height:100%;
 		padding: 10px 15px;
 		position: relative;
@@ -385,19 +402,19 @@ input, textarea{
 	}
 	
 	.message::before{
-		--triangle-color:var(--received-message-bg-color);
+		$triangle-color: $received-message-bg-color;
 		
 		border-bottom-color: transparent;
 		border-left-color: transparent;
-		border-right-color:var(--triangle-color);
+		border-right-color: $triangle-color;
 		border-style:solid;
-		border-top-color: var(--triangle-color); 
+		border-top-color:  $triangle-color;
 		border-width: 4px;
 		
 		content:'';
 		
 		height: 0;
-		left:var(--message-triangle-offset);
+		left: $message-triangle-offset;
 		position: absolute;
 		top:0;
 		width: 0;
@@ -422,21 +439,21 @@ input, textarea{
 
 		}
 		.message{
-			background:var(--sent-message-bg-color);
-			color:var(--sent-message-color);
+			background: $sent-message-bg-color;
+			color: $sent-message-color;
 			border-top-right-radius: 0;
 			border-top-left-radius: 5px;
 
 		}
 		
 		.message::before{
-			--triangle-color:var(--sent-message-bg-color);
+			$triangle-color: $sent-message-bg-color;
 
-			border-top-color: var(--triangle-color);
-			border-left-color: var(--triangle-color);
+			border-top-color:  $triangle-color;
+			border-left-color:  $triangle-color;
 			border-right-color: transparent;
 			left:auto;
-			right:var(--message-triangle-offset);
+			right: $message-triangle-offset;
 		}
 	}
 }
@@ -448,9 +465,10 @@ input, textarea{
 
 .message-input{
 	background:white;
-	color:var(--secondary-color);
+	color: $secondary-color;
 	box-sizing: border-box;
-	height: var(--footer-height);
+	height:$footer-height;
+	max-height:  $footer-max-height;
 	
 	.message-form{
 		height:100%;
@@ -480,13 +498,13 @@ input, textarea{
 			text-align: center;
 			border:none;
 			height:100%;
-			color:var(--sent-message-color);
-			background:var(--primary-color);
+			color: $sent-message-color;
+			background: $primary-color;
 			transition:all .35s ease-out;
 			
 			&:disabled{
 			opacity: .2;
-				background: var(--primary-color-light);
+				background:  $primary-color-light;
 			}
 		}
 	}
