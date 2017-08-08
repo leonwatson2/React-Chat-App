@@ -15,20 +15,12 @@ export default class LoginForm extends Component {
 
 	componentDidMount(){
 		this.focus()
-		this.initSocket()
 	}
 
-	initSocket(){
-		const { socket } = this.props
-
-		socket.on(VERIFY_USER, this.setUser)
-
-	}
 
 	setUser(response){
 		if(!response.isUser){
 			this.props.setUser(response.user)
-			this.props.socket.off(VERIFY_USER, this.setUser)
 		}
 		else{
 			this.setError("User name taken.")
@@ -50,11 +42,11 @@ export default class LoginForm extends Component {
 		event.preventDefault()
 		const { socket } = this.props
 		const { nickname } = this.state
-		socket.emit(VERIFY_USER, nickname)
+		socket.emit(VERIFY_USER, nickname, this.setUser)
 		
 	}
 	
-
+	//focus on input
 	focus(){
 		this.textInput.focus()
 	}
@@ -62,11 +54,11 @@ export default class LoginForm extends Component {
 	render() {
 		const { nickname } = this.state 
 		return (
+			// .login>form.login-form>((label[for=nickname]>h1{Got a nickname?})+input[value][onChange][placeholder=Leon])
 			<div className="login">
 				<form onSubmit={this.handleSubmit} className="login-form">
 
 			          <label 
-			          		className="col s12" 
 			          		htmlFor="nickname">
 			          		<h1 style={{textAlign:"center"}}>
 			          			Got a nickname?
@@ -76,7 +68,6 @@ export default class LoginForm extends Component {
 			          <input 
 			          		ref={(input)=>{ this.textInput = input }}
 			          		id="nickname" 
-			          		className="col s12" 
 			          		type="text"
 			          		value={nickname}
 			          		onChange={this.handleChange}

@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import FAVideo from 'react-icons/lib/fa/video-camera'
 import FAUserPlus from 'react-icons/lib/fa/user-plus'
 import MdEllipsisMenu from 'react-icons/lib/md/keyboard-control'
+
 export default class ChatHeading extends Component {
 	render() {
-		const { name, online } = this.props
+		const { name, online, numberOfUsers } = this.props
 		const onlineText = online ? 'online':'offline'
 		return (
 			<div className="chat-header">
@@ -12,7 +13,7 @@ export default class ChatHeading extends Component {
 					<div className="user-name">{name}</div>
 					<div className="status">
 						<div className={`indicator ${onlineText}`}></div>
-						<span> {onlineText}</span>
+						<span>{numberOfUsers ? numberOfUsers : null} online</span>
 					</div>
 				</div>
 				<div className="options">

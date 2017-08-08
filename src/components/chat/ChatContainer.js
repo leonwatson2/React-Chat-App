@@ -8,6 +8,7 @@ import { User } from '../../Classes'
 import Messages from '../messaging/Messages'
 import MessageInput from '../messaging/MessageInput'
 import ChatHeading from './ChatHeading'
+
 import { COMMUNITY_CHAT, MESSAGE_RECIEVED, MESSAGE_SENT, TYPING } from '../../Constants'
 
 export default class ChatContainer extends Component {
@@ -27,26 +28,32 @@ export default class ChatContainer extends Component {
 
 	componentDidMount() {
 		const { socket } = this.props
-		socket.emit(COMMUNITY_CHAT)
+		socket.emit(COMMUNITY_CHAT, this.resetChat)
 		this.initSocket()
 	}
 
 	componentWillUnmount() {
 		this.deinitialize()
 	}
-		
+	
+	/*
+	*	Initializes the socket.
+	*/	
 	initSocket(){
 		const { socket } = this.props
-		socket.on(COMMUNITY_CHAT, this.resetChat)
+		socket.on('disconnect', ()=>{
+			socket.emit(COMMUNITY_CHAT, this.resetChat)
+		})
 	}
 
 	deinitialize(){
 		const { socket } = this.props
-
-		socket.off(COMMUNITY_CHAT)
 		this.removeSocketEvents(socket, this.socketEvents)
 	}
 
+	/*
+	*	Removes chat event listeners on socket.
+	*/
 	removeSocketEvents(socket, events){
 
 		if(events.length > 0){
@@ -54,36 +61,41 @@ export default class ChatContainer extends Component {
 			this.removeSocketEvents(socket, events.slice(1))
 		}
 	}
+
 	/*
-	*	Gets the community chat and sets 
-	*	message recieve event for
+	*	Reset the chat back to only the chat passed in.
 	* 	@param chat {Chat}
 	*/
 	resetChat(chat){
-		
+		return this.addChat(chat, true)
+	}
+
+	/*
+	*	Adds chat to the chat container, if reset is true removes all chats
+	*	and sets that chat to the main chat.
+	*	Sets the message and typing socket events for the chat.
+	*	
+	*	@param chat {Chat} the chat to be added.
+	*	@param reset {boolean} if true will set the chat as the only chat.
+	*/
+	addChat(chat, reset){
 		const { socket } = this.props
 		const { chats } = this.state
+		const newChats = reset ? [chat] : [...chats, chat]
+		
+		this.setState({chats:newChats, activeChat:chat})
 		const messageEvent = `${MESSAGE_RECIEVED}-${chat.id}`
 		const typingEvent = `${TYPING}-${chat.id}`
 
-		this.setState({chats:[chat], activeChat:chat})
-		
 		socket.on(messageEvent, this.addMessageToChat(chat.id))
 		socket.on(typingEvent, this.updateTypingInChat(chat.id))
 		
-		this.socketEvents.push(messageEvent, typingEvent)
-
-	}
-
-	addChat(chat){
-		const { socket } = this.props
-		const { chats } = this.state
-		this.setState({chats:[...chats, chat], activeChat:chat})
-		socket.on(`${MESSAGE_RECIEVED}-${chat.id}`, this.addMessageToChat(chat.id))
+		this.socketEvents.push(messageEvent, typingEvent) // used to remove event listerners
 	}
 
 	/*
 	* Adds message to chat 
+	* @param chatId {number}
 	*/
 	addMessageToChat(chatId){
 		return message =>{
@@ -99,6 +111,7 @@ export default class ChatContainer extends Component {
 
 	/*
 	*	Updates the typing of chat with id passed in.
+	*	@param chatId {number}
 	*/
 	updateTypingInChat(chatId){
 		return ({isTyping, user}) =>{
@@ -118,6 +131,7 @@ export default class ChatContainer extends Component {
 					}
 				}
 	}
+
 	/*
 	*	Adds a message to the specified chat
 	*	@param chatId {number}  The id of the chat to be added to.
@@ -201,9 +215,6 @@ export default class ChatContainer extends Component {
 		);
 	}
 }
-
-
-
 
 ChatContainer.propTypes = {
 	socket:PropTypes.object,
