@@ -8,13 +8,14 @@ export default class Messages extends Component {
 	}
 	
 	
-
+	/*
+	*	Scrolls down the view of the messages.
+	*/
 	scrollDown(){
 		const { container } = this.refs
 		container.scrollTop = container.scrollHeight
 	}
 	
-	//Life Cycles
 	componentDidUpdate(newProps){
 		this.scrollDown();
 
