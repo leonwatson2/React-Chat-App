@@ -1,35 +1,35 @@
 const uuidv4 = require('uuid/v4');
 
 /*
-*	@constructor User
 *	@prop id {string}
 *	@prop name {string}
 *	@param {object} 
 *		name {string}
 */
-function User({name}){
-	this.id = uuidv4()
-	this.name = name
-}
+const createUser = ({name})=>(
+	 {
+		id: uuidv4(),
+		name
+	}
+)
 
 /*
-*	@constructor Message
+*	Creates a messages object.
 * 	@prop id {string}
-* 	@prop time {Date}
-* 	@prop message {string}
-* 	@prop sender {string}
-* 	@prop getTime {function} returns the Date of message in 24hr time format
+* 	@prop time {Date} the time in 24hr format i.e. 14:22
+* 	@prop message {string} actual string message
+* 	@prop sender {string} sender of the message
 *	@param {object} 
 *		message {string}
 *		sender {string}
 */
-function Message({message, sender}){
-	this.id = uuidv4()
-	this.time = getTime(new Date(Date.now()))
-	this.message = message
-	this.sender = sender
-
-	
+const createMessage = ({message, sender})=>{
+	return {
+		id: uuidv4(),
+		time: getTime(new Date(Date.now())),
+		message: message,
+		sender: sender
+	}
 } 
 
 /*
@@ -47,32 +47,33 @@ function Message({message, sender}){
 *		users {Array.string}
 * 
 */
-function Chat({messages = [], name="", users=[]}){
-			
-	this.id = uuidv4()
-	this.name = name
-	this.messages = messages
-	this.users = users
-	this.typingUsers = []
+const createChat = ({messages = [], name="Community", users=[]} = {})=>(
+	{
+		id: uuidv4(),
+		name,
+		messages,
+		users,
+		typingUsers: [],
 
-	this.addMessage = (message)=>{
-		this.messages.push(message)
-	}
-	this.addTypingUser = (username)=>{
-		this.typingUsers.push(username)
-	}
-	this.removeTypingUser = (username) => {
-		this.typingUsers.splice(this.typingUsers.indexOf(username), 1)
+		addMessage: (message)=>{
+			this.messages.push(message)
+		},
+		addTypingUser: (username)=>{
+			this.typingUsers.push(username)
+		},
+		removeTypingUser: (username) => {
+			this.typingUsers.splice(this.typingUsers.indexOf(username), 1)
 
+		}
 	}
-}
+)
 
 const getTime = (date)=>{
 		return `${date.getHours()}:${("0"+date.getMinutes()).slice(-2)}`
 	}
 
 module.exports = {
-	Chat,
-	Message,
-	User
+	createChat,
+	createMessage,
+	createUser
 }
