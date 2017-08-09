@@ -1,13 +1,13 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = module.exports.io = require('socket.io')(http);
+var app = require('http').createServer()
+var io = module.exports.io = require('socket.io')(app);
+
 const PORT = process.env.PORT || 3231
 const SocketManager = require('./SocketManager')
  
 io.on('connection', SocketManager);
 
 
-http.listen(PORT, function(){
+app.listen(PORT, function(){
   console.log('listening on *:' + PORT);
 });
 
