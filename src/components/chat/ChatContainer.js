@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
-import ChatThread from './ChatThread'
 import SideBar from './SideBar'
 
 import { User } from '../../Classes'
@@ -84,6 +83,7 @@ export default class ChatContainer extends Component {
 		const newChats = reset ? [chat] : [...chats, chat]
 		
 		this.setState({chats:newChats, activeChat:chat})
+		
 		const messageEvent = `${MESSAGE_RECIEVED}-${chat.id}`
 		const typingEvent = `${TYPING}-${chat.id}`
 
@@ -177,9 +177,7 @@ export default class ChatContainer extends Component {
 					activeChat={activeChat}
 					setActiveChat={ (chat)=> this.setActiveChat(chat) }/>		
 
-				<ChatThread 
-					chat={activeChat} 
-					user={user}>
+				<div className="chat-room-container">
 					{
 						activeChat !== null ? (
 							<div className="chat-room">
@@ -210,7 +208,7 @@ export default class ChatContainer extends Component {
 								<h3>Choose a chat</h3>
 							</div>
 					}
-				</ChatThread>
+				</div>
 			</div>
 		);
 	}
