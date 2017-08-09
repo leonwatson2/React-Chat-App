@@ -6,7 +6,7 @@ export default class LoginForm extends Component {
 	
 	constructor(props) {
 	    super(props);
-	    this.state = { nickname: "Love" };
+	    this.state = { nickname: "Love", error:"" };
 
 	    this.handleChange = this.handleChange.bind(this);
 	    this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,7 +29,7 @@ export default class LoginForm extends Component {
 	}
 
 	setError(error){
-		console.error(error);
+		this.setState({error});
 	}
 
 	//updates form inputs
@@ -52,7 +52,7 @@ export default class LoginForm extends Component {
 	}
 
 	render() {
-		const { nickname } = this.state 
+		const { nickname, error } = this.state 
 		return (
 			// .login>form.login-form>((label[for=nickname]>h1{Got a nickname?})+input[value][onChange][placeholder=Leon])
 			<div className="login">
@@ -73,6 +73,7 @@ export default class LoginForm extends Component {
 			          		onChange={this.handleChange}
 			          		placeholder={this.randomPlaceholder()} 
 			          		/>
+			          	<div className="error">{error ? error : ""}</div>
 				</form>
 			</div>
 		);

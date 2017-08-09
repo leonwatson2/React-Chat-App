@@ -14,7 +14,7 @@
 	$main-padding-vertical:18px;
 	$main-padding-horizontal:16px;
 	$main-padding: $main-padding-vertical $main-padding-horizontal;
-
+	$error-text: #c92c43;
 	$head-height:12vh;
 	$head-max-height:65px;
 	$footer-max-height:65px;
@@ -74,6 +74,12 @@ input, textarea{
 			border-bottom:solid 2px  $primary-color-light;
 			outline: none;
 		}
+	}
+	.error{
+		text-align: center;
+		margin: 5px 0;
+		padding: 5px 10px;
+		color:$error-text;
 	}
 }
 @mixin dot-indicator($size, $color){
