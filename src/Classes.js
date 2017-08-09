@@ -33,7 +33,7 @@ const createMessage = ({message, sender})=>{
 } 
 
 /*
-*	@constructor Chat
+*	Creates a Chat object
 * 	@prop id {string}
 * 	@prop name {string}
 * 	@prop messages {Array.Message}
@@ -55,14 +55,14 @@ const createChat = ({messages = [], name="Community", users=[]} = {})=>(
 		users,
 		typingUsers: [],
 
-		addMessage: (message)=>{
-			this.messages.push(message)
+		addMessage: (messages, message)=>{
+			return [...messages, message]
 		},
-		addTypingUser: (username)=>{
-			this.typingUsers.push(username)
+		addTypingUser: (typingUsers, username)=>{
+			return [...typingUsers, username]
 		},
-		removeTypingUser: (username) => {
-			this.typingUsers.splice(this.typingUsers.indexOf(username), 1)
+		removeTypingUser: (typingUsers, username) => {
+			return typingUsers.filter((u)=>u === username)
 
 		}
 	}
