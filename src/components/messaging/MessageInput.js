@@ -38,9 +38,8 @@ export default class MessageInput extends Component {
 	sendTyping(){
 		this.lastUpdateTime = Date.now()
 		if(!this.state.isTyping){
-			const { sendTyping } = this.props
 			this.setState({isTyping:true})
-			sendTyping(true);
+			this.props.sendTyping(true);
 			this.startCheckingTyping()
 		}
 	}
@@ -72,7 +71,7 @@ export default class MessageInput extends Component {
 		const { message } = this.state
 		return (
 			<div className="message-input">
-					<form ref={(form)=>{this.form = form}} 
+					<form  
 						onSubmit={this.handleSubmit}
 							className="message-form">
 						
