@@ -138,8 +138,7 @@ function removeUser(userList, username){
 * @return userList {Object} Object with key value pairs of Users
 */
 function isUser(userList, username){
-  let res = !!userList[username]
-  return res
+  return username in userList
 }
 
 function createError(message){
