@@ -30,3 +30,5 @@ src/components/test-io.css
 src/registerServiceWorker.js
 
 .env
+
+package-lock.json
