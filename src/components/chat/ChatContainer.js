@@ -40,7 +40,7 @@ export default class ChatContainer extends Component {
 	*/	
 	initSocket(){
 		const { socket } = this.props
-		socket.on('disconnect', ()=>{
+		socket.on('connect', ()=>{
 			socket.emit(COMMUNITY_CHAT, this.resetChat)
 		})
 	}
