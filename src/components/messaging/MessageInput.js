@@ -25,6 +25,7 @@ export default class MessageInput extends Component {
 	sendMessage(){
 
 		this.props.sendMessage(this.state.message)
+		this.blur()
 	}
 
 	componentWillUnmount() {
@@ -66,7 +67,9 @@ export default class MessageInput extends Component {
 			this.props.sendTyping(false)
 		}
 	}
-
+	blur = ()=>{
+		this.refs.messageinput.blur()
+	}
 	render() {
 		const { message } = this.state
 		return (
@@ -77,6 +80,7 @@ export default class MessageInput extends Component {
 						
 						<input 
 							id="message"
+							ref={"messageinput"}
 							type="text" 
 							className="form-control"
 							value = { message } 
