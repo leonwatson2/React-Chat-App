@@ -3,7 +3,7 @@ const {
   COMMUNITY_CHAT, MESSAGE_RECIEVED, MESSAGE_SENT, 
   USER_CONNECTED, USER_DISCONNECTED, TYPING, 
   STOP_TYPING, VERIFY_USER, LOGOUT
-        } = require('../Constants')
+        } = require('./Constants')
 const { createUser, createChat, createMessage } = require('../Classes')
 
 let communityChat = createChat()
