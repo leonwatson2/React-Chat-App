@@ -4,7 +4,7 @@ const {
   USER_CONNECTED, USER_DISCONNECTED, TYPING, 
   STOP_TYPING, VERIFY_USER, LOGOUT
         } = require('./Constants')
-const { createUser, createChat, createMessage } = require('../Classes')
+const { createUser, createChat, createMessage } = require('./Classes')
 
 let communityChat = createChat()
 
